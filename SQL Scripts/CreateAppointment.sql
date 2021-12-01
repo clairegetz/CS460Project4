@@ -12,21 +12,4 @@ CREATE TABLE Appointment (
        FOREIGN KEY(customerID) REFERENCES Customer(customerID),
        FOREIGN KEY(employeeID) REFERENCES Employee(employeeID)
 );
-
---prevents appointments that overlap
---CREATE TRIGGER no_overlap
---BEFORE INSERT ON Appointment
---FOR EACH ROW
---DECLARE apptCount NUMBER;
---BEGIN
---	SELECT COUNT(*) INTO apptCount
---	FROM Appointments
---	WHERE userID = new.userID
---	AND apptDate = new.apptDate
---	AND apptTime = new.apptTime
---IF: apptCount > 1
---    THEN RAISE_APPLICATION_ERROR(-20002, 'APPOINTMENT CONFLICT FOR THIS USER');
---END IF;
---END;
---/
 	
