@@ -1,7 +1,12 @@
---INSERT INTO Department(deptID) values (1);
---INSERT INTO Department(deptID) values (2);
---INSERT INTO Department(deptID) values (3);
---INSERT INTO Department(deptID) values (4);
+INSERT INTO Department(deptID, deptName) VALUES (1, "Permit");
+INSERT INTO Department(deptID, deptName) VALUES (2, "License");
+INSERT INTO Department(deptID, deptName) VALUES (3, "Vehicle Registration");
+INSERT INTO Department(deptID, deptName) VALUES (4, "StateID");
+
+INSERT INTO Jobs(jobID, title, salary) VALUES (1, "Supervisor", 55000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (2, "Front Desk", 40000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (3, "Security", 45000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (4, "Clerk", 45000);
 
 --INSERT INTO Customer(customerID) values (1);
 
