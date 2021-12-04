@@ -294,7 +294,38 @@ public class UserInterface {
 	}
 	
 	public void query() {
-		System.out.println("Query1");
+		//Query 1
+		System.out.println("SELECT * FROM (\n" +
+				"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+				"       FROM Customer, License, Department\n" +
+				"       WHERE Customer.customerID = License.customerID\n" +
+				"       AND License.deptID = Department.deptID\n" +
+				"       UNION ALL\n" +
+				"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+				"       FROM Customer, Registration, Department\n" +
+				"       WHERE Customer.customerID = Registration.customerID\n" +
+				"       AND Registration.deptID = Department.deptID\n" +
+				"       UNION ALL\n" +
+				"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+				"       FROM Customer, Permit, Department\n" +
+				"       WHERE Customer.customerID = Permit.customerID\n" +
+				"       AND Permit.deptID = Department.deptID\n" +
+				"       UNION ALL\n" +
+				"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+				"       FROM Customer, StateID, Department\n" +
+				"       WHERE Customer.customerID = StateID.customerID\n" +
+				"       AND StateID.deptID = Department.deptID )\n" +
+				"WHERE expireDate <= TO_DATE('%s', 'MM/DD/YYYY');");
+		//Query 2
+		System.out.println("SELECT COUNT(apptSuccessful) AS TotalAppts, SUM(apptSuccessful) AS Sucessful, deptName FROM (\n" +
+				"SELECT * FROM Department JOIN Appointment\n" +
+				"ON Appointment.deptID = Department.deptID\n" +
+				"WHERE apptTime >= add_months(sysdate, -2)\n" +
+				"INTERSECT\n" +
+				"SELECT * FROM Department JOIN Appointment\n" +
+				"ON Appointment.deptID = Department.deptID\n" +
+				"WHERE apptTime < LAST_DAY(ADD_MONTHS(sysdate, -1)))\n" +
+				"GROUP BY deptName;");
 	}
 	
 	
