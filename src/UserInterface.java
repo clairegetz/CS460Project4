@@ -4,12 +4,53 @@ import java.util.Scanner;
 
 
 public class UserInterface {
-	private Statement stmt;
+	private static Statement stmt;
 	private Scanner scan = new Scanner(System.in);
 	private final String[] table_names = new String[] {"Employee", "Appointment", "Customer", "StateID",
 			"Permit", "Registration", "License"};
 	private HashMap<String, Table> tables = new HashMap<String, Table>();
 	private final String table_prefix = "Name";
+	
+	final private String QUESTION1 = "How many schools have different names in 2021 then they were in 2017?";
+    final private String QUESTION2 = "What are the district and school names of the schools that reported "
+                    + "decreased percentages in level 4 and 5, and increased percentages in level 1 and 2 from 2019 to 2021?";
+    final private String QUESTION3 = "What are the 5 highest combined level 4 and 5 percentage schools of a given a "
+                    + "year and district number?";
+    final private String QUESTION4 = "What are the percentage differences of all levels from the year 2019 to 2021 for a given school name?";
+    
+    
+    final private static String QUERY1 = "SELECT * FROM (\n" +
+			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+			"       FROM Customer, License, Department\n" +
+			"       WHERE Customer.customerID = License.customerID\n" +
+			"       AND License.deptID = Department.deptID\n" +
+			"       UNION ALL\n" +
+			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+			"       FROM Customer, Registration, Department\n" +
+			"       WHERE Customer.customerID = Registration.customerID\n" +
+			"       AND Registration.deptID = Department.deptID\n" +
+			"       UNION ALL\n" +
+			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+			"       FROM Customer, Permit, Department\n" +
+			"       WHERE Customer.customerID = Permit.customerID\n" +
+			"       AND Permit.deptID = Department.deptID\n" +
+			"       UNION ALL\n" +
+			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
+			"       FROM Customer, StateID, Department\n" +
+			"       WHERE Customer.customerID = StateID.customerID\n" +
+			"       AND StateID.deptID = Department.deptID )\n" +
+			"WHERE expireDate <= TO_DATE('%s', 'MM/DD/YYYY')";
+    final private static String QUERY2 = "SELECT COUNT(apptSuccessful) AS TotalAppts, SUM(apptSuccessful) AS Successful, deptName FROM (\n" +
+			"SELECT * FROM Department JOIN Appointment\n" +
+			"ON Appointment.deptID = Department.deptID\n" +
+			"WHERE apptTime >= add_months(sysdate, -2)\n" +
+			"INTERSECT\n" +
+			"SELECT * FROM Department JOIN Appointment\n" +
+			"ON Appointment.deptID = Department.deptID\n" +
+			"WHERE apptTime < LAST_DAY(ADD_MONTHS(sysdate, -1)))\n" +
+			"GROUP BY deptName";
+    final private static String QUERY3 = "";
+    final private static String QUERY4 = "";
 	
 	public UserInterface(Statement stmt) {
 		this.stmt = stmt; 
@@ -45,15 +86,24 @@ public class UserInterface {
 	public void run_user_interface() {
 		int main_response = main_menu(true);
 		while (main_response != -1) {
-			if (main_response == 1) {
-				insert();
-			} else if (main_response == 2) {
-				delete();
-			} else if (main_response == 3) {
-				update();
-			} else {
-				query();
-			}
+			try {
+				if (main_response == 1) {
+					insert();
+				} else if (main_response == 2) {
+					delete();
+				} else if (main_response == 3) {
+					update();
+				} else {
+					query();
+				}
+			} catch (SQLException e) {
+                        System.err.println("*** SQLException:  "
+                            + "Could not execute query.");
+                        System.err.println("\tMessage:   " + e.getMessage());
+                        System.err.println("\tSQLState:  " + e.getSQLState());
+                        System.err.println("\tErrorCode: " + e.getErrorCode());
+                        System.exit(-1);
+             }
 			main_response = main_menu(false);
 		}
 		
@@ -115,19 +165,19 @@ public class UserInterface {
 	
 	public boolean isValidDate(String input) {
 		if (input.length() != 10) {
-			System.out.println("Invalid date, Ex. 00-00-0000");
+			System.out.println("Invalid date, Ex. 0000-00-00");
 			return false;
 		}
 		for (int i = 0; i < input.length(); i++) {
 			char c = input.charAt(i);
-			if (i == 2 || i == 5) {
+			if (i == 4 || i == 7) {
 				if (c != '-') {
-					System.out.println("Invalid date, Ex. 00-00-0000");
+					System.out.println("Invalid date, Ex. 0000-00-00");
 					return false;
 				}
 			} else {
 				if (c < 48 || c > 57) {
-					System.out.println("Invalid date, Ex. 00-00-0000");
+					System.out.println("Invalid date, Ex. 0000-00-00");
 					return false;
 				}
 			}
@@ -199,7 +249,7 @@ public class UserInterface {
 	public void print_select(String name, String type) {
 		String field = String.format("Select a %s (%s)", name, type);
 		if (type.equals("Date")) {
-			 field += " Ex. 00-00-0000";
+			 field += " Ex. 0000-00-00";
 		} else if (type.equals("Time")){
 			field += " Ex. 2000-01-01 00:00:00";
 		} else if (type.equals("Number")){
@@ -209,7 +259,7 @@ public class UserInterface {
 	}
 	
 	
-	public void insert() {
+	public void insert() throws SQLException {
 		String table_name = table_select("Insert");
 		Table table = tables.get(table_name);
 		System.out.println(String.format("Insert into table %s: %s", table_name, table));
@@ -235,10 +285,11 @@ public class UserInterface {
 			first = false;
 		}
 		insert_query += ")";
-		System.out.println(insert_query + "\n");
+		stmt.executeUpdate(insert_query);
+		System.out.println("Insert Successful");
 	}
 	
-	public void delete() {
+	public void delete() throws SQLException {
 		String table_name = table_select("Delete");
 		Table table = tables.get(table_name);
 		System.out.println(String.format("Select an %s that you want to delete from the table %s.", table.field_names[0], table_name));
@@ -249,11 +300,12 @@ public class UserInterface {
 			valid = validate_input(input, "Int");
 		}
 		int id = Integer.parseInt(input);
-		String delete = String.format("Delete from %s.%s where %s = %d;", table_prefix, table_name, table.field_names[0], id);
-		System.out.println(delete + "\n");
+		String delete = String.format("Delete from %s.%s where %s = %d", table_prefix, table_name, table.field_names[0], id);
+		stmt.executeUpdate(delete);
+		System.out.println("Delete Successful");
 	}
 	
-	public void update() {
+	public void update() throws SQLException {
 		String table_name = table_select("Update");
 		Table table = tables.get(table_name);
 		System.out.println(String.format("Select an %s that you want to update the fields of from the table %s.", table.field_names[0], table_name));
@@ -288,13 +340,152 @@ public class UserInterface {
 				}
 			}
 		}
-		update += String.format("where %s = %d;", table.field_names[0], id);
-		System.out.println(update + "\n");
+		update += String.format("where %s = %d", table.field_names[0], id);
+		stmt.executeUpdate(update);
+		System.out.println("Update Successful");
 	}
 	
-	public void query() {
-		System.out.println("Query1");
+	
+	public String getDate() {
+		System.out.println("Please enter a date of the form mm-dd-yyyy");
+		boolean valid = false;
+		String input = null;
+		while (!valid) {
+			valid = true;
+			input = scan.nextLine();
+			if (input.length() != 10) {
+				valid = false;
+			} else {
+				for (int i = 0; i < input.length(); i++) {
+					char c = input.charAt(i);
+					if (i == 4 || i == 7) {
+						if (c != '-') {
+							valid = false;
+						}
+					} else {
+						if (c < 48 || c > 57) {
+							valid = false;
+						}
+					}
+				}
+			}
+			if (!valid) {
+				System.out.println("Invalid date, Ex. mm-dd-yyyy");
+			}
+		}
+		return input;
 	}
+	
+	public void query() throws SQLException {
+		System.out.println(String.format("\nWhich query would you like to run?\n"
+                + "1. %s\n2. %s\n3. %s\n4. %s\nOther. exit program!\n",
+                QUESTION1, QUESTION2, QUESTION3, QUESTION4));
+		boolean valid = false;
+		while (!valid) {
+			String input = scan.next();
+			if (input.equals("1")) {
+				String date = getDate();
+				query1(date);
+			} else if (input.equals("2")) {
+				query2();
+			} else if (input.equals("3")) {
+				query3();
+			} else if (input.equals("4")) {
+				query4();
+			} else {
+				System.out.println("You need to input a value between 1 and 4.");
+			}
+		}
+	}
+	
+	
+	public static void query1(String date) throws SQLException {
+        String query = String.format(QUERY1, date);
+        ResultSet results = stmt.executeQuery(query);
+        if (results != null) {
+                System.out.println("\n" + query);
+                ResultSetMetaData resultsmetadata = results.getMetaData();
+                if (resultsmetadata.getColumnCount() > 0) {
+                	System.out.println(resultsmetadata.getColumnName(1));
+                }
+                for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+                	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+                }
+                System.out.println();
+                while(results.next()) {
+                	System.out.println(results.getInt("Customer.customerID"));
+                	System.out.println("\t" + results.getString("firstName"));
+                	System.out.println("\t" + results.getString("lastName"));
+                	System.out.println("\t" + results.getDate("expireDate"));
+                	System.out.println("\t" + results.getString("deptName"));
+                }
+        }
+}
+public static void query2() throws SQLException {
+	String query = String.format(QUERY2);
+    ResultSet results = stmt.executeQuery(query);
+    if (results != null) {
+            System.out.println("\n" + query);
+            ResultSetMetaData resultsmetadata = results.getMetaData();
+            if (resultsmetadata.getColumnCount() > 0) {
+            	System.out.println(resultsmetadata.getColumnName(1));
+            }
+            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+            }
+            System.out.println();
+            while(results.next()) {
+            	System.out.println(results.getInt("TotalAppts"));
+            	System.out.println("\t" + results.getInt("Successful"));
+            }
+    }
+}
+
+public static void query3() throws SQLException {
+	String query = String.format(QUERY3);
+    ResultSet results = stmt.executeQuery(query);
+    if (results != null) {
+            System.out.println("\n" + query);
+            ResultSetMetaData resultsmetadata = results.getMetaData();
+            if (resultsmetadata.getColumnCount() > 0) {
+            	System.out.println(resultsmetadata.getColumnName(1));
+            }
+            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+            }
+            System.out.println();
+            while(results.next()) {
+            	System.out.println(results.getInt("Customer.customerID"));
+            	System.out.println("\t" + results.getString("firstName"));
+            	System.out.println("\t" + results.getString("lastName"));
+            	System.out.println("\t" + results.getDate("expireDate"));
+            	System.out.println("\t" + results.getString("deptName"));
+            }
+    }
+}
+
+public static void query4() throws SQLException {
+	String query = String.format(QUERY4);
+    ResultSet results = stmt.executeQuery(query);
+    if (results != null) {
+            System.out.println("\n" + query);
+            ResultSetMetaData resultsmetadata = results.getMetaData();
+            if (resultsmetadata.getColumnCount() > 0) {
+            	System.out.println(resultsmetadata.getColumnName(1));
+            }
+            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+            }
+            System.out.println();
+            while(results.next()) {
+            	System.out.println(results.getInt("Customer.customerID"));
+            	System.out.println("\t" + results.getString("firstName"));
+            	System.out.println("\t" + results.getString("lastName"));
+            	System.out.println("\t" + results.getDate("expireDate"));
+            	System.out.println("\t" + results.getString("deptName"));
+            }
+    }
+}
 	
 	
 	public class Table {
