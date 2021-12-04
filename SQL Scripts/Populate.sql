@@ -5,10 +5,10 @@ INSERT INTO Department(deptID, deptName) VALUES (3, 'Vehicle Registration');
 INSERT INTO Department(deptID, deptName) VALUES (4, 'StateID');
 
 -- Insert for Jobs
-INSERT INTO Jobs(jobID, title, salary) VALUES (1, 'Supervisor', 55000);
-INSERT INTO Jobs(jobID, title, salary) VALUES (2, 'Front Desk', 40000);
-INSERT INTO Jobs(jobID, title, salary) VALUES (3, 'Security', 45000);
-INSERT INTO Jobs(jobID, title, salary) VALUES (4, 'Clerk', 45000);
+INSERT INTO Job(jobID, title, salary) VALUES (1, 'Supervisor', 55000);
+INSERT INTO Job(jobID, title, salary) VALUES (2, 'Front Desk', 40000);
+INSERT INTO Job(jobID, title, salary) VALUES (3, 'Security', 45000);
+INSERT INTO Job(jobID, title, salary) VALUES (4, 'Clerk', 45000);
 
 -- Insert for Employee
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
@@ -67,13 +67,13 @@ VALUES (1, timestamp '2000-01-01 00:00:00', 1, NULL, NULL, 2, 01, 12);
 
 -- Insert for Permit
 INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P11111111', DATE '2020-01-22', DATE '2060-01-22', 03, 1);
+VALUES ('P11111111', DATE '2020-01-22', DATE '2060-01-22','A', 03, 1);
 INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P22222222', DATE '2011-04-19', DATE '2025-04-19', 04, 1);
+VALUES ('P22222222', DATE '2011-04-19', DATE '2025-04-19','D', 04, 1);
 INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P33333333', DATE '2016-06-16', DATE '2033-06-16', 05, 1);
+VALUES ('P33333333', DATE '2016-06-16', DATE '2033-06-16','M', 05, 1);
 INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P44444444', DATE '2018-02-06', DATE '2030-02-06', 06, 1);
+VALUES ('P44444444', DATE '2018-02-06', DATE '2030-02-06','D', 06, 1);
 
 -- Insert for License
 INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
