@@ -6,44 +6,42 @@ SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
 FROM Customer, License, Department
 WHERE Customer.customerID = License.customerID
 AND License.deptID = Department.deptID
-AND expireDate <= DATE '2020-12-31'
-UNION
+AND expireDate <= DATE '2050-12-31';
 SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
 FROM Customer, Registration, Department
 WHERE Customer.customerID = Registration.customerID	
 AND Registration.deptID = Department.deptID
-AND expireDate <= DATE '2020-12-31'
-UNION
+AND expireDate <= DATE '2050-12-31';
 SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
 FROM Customer, Permit, Department
 WHERE Customer.customerID = Permit.customerID	
 AND Permit.deptID = Department.deptID
-AND expireDate <= DATE '2020-12-31'
-UNION
+AND expireDate <= DATE '2050-12-31';
 SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
 FROM Customer, StateID, Department
 WHERE Customer.customerID = StateID.customerID	
 AND StateID.deptID = Department.deptID
-AND expireDate <= DATE '2020-12-31';
+AND expireDate <= DATE '2050-12-31';
 
 SELECT * FROM (
        SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
        FROM Customer, License, Department
        WHERE Customer.customerID = License.customerID	
        AND License.deptID = Department.deptID
-       UNION
+       UNION ALL
        SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
        FROM Customer, Registration, Department
        WHERE Customer.customerID = Registration.customerID
        AND Registration.deptID = Department.deptID
-       UNION
+       UNION ALL
        SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
        FROM Customer, Permit, Department
        WHERE Customer.customerID = Permit.customerID
        AND Permit.deptID = Department.deptID
-       UNION
+       UNION ALL
        SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName
        FROM Customer, StateID, Department
        WHERE Customer.customerID = StateID.customerID
        AND StateID.deptID = Department.deptID )
-WHERE expireDate <= DATE '2020-12-31';
+WHERE expireDate <= DATE '2050-12-31';
+
