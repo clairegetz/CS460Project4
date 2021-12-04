@@ -1,65 +1,65 @@
 -- Insert for Department
-INSERT INTO Department(deptID, deptName) VALUES (1, "Permit");
-INSERT INTO Department(deptID, deptName) VALUES (2, "License");
-INSERT INTO Department(deptID, deptName) VALUES (3, "Vehicle Registration");
-INSERT INTO Department(deptID, deptName) VALUES (4, "StateID");
+INSERT INTO Department(deptID, deptName) VALUES (1, 'Permit');
+INSERT INTO Department(deptID, deptName) VALUES (2, 'License');
+INSERT INTO Department(deptID, deptName) VALUES (3, 'Vehicle Registration');
+INSERT INTO Department(deptID, deptName) VALUES (4, 'StateID');
 
 -- Insert for Jobs
-INSERT INTO Jobs(jobID, title, salary) VALUES (1, "Supervisor", 55000);
-INSERT INTO Jobs(jobID, title, salary) VALUES (2, "Front Desk", 40000);
-INSERT INTO Jobs(jobID, title, salary) VALUES (3, "Security", 45000);
-INSERT INTO Jobs(jobID, title, salary) VALUES (4, "Clerk", 45000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (1, 'Supervisor', 55000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (2, 'Front Desk', 40000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (3, 'Security', 45000);
+INSERT INTO Jobs(jobID, title, salary) VALUES (4, 'Clerk', 45000);
 
 -- Insert for Employee
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (11, "Harper", "Pacheco", 1, 1);
+VALUES (11, 'Harper', 'Pacheco', 1, 1);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (12, "Carl", "Sims", 2, 1);
+VALUES (12, 'Carl', 'Sims', 2, 1);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (13, "Heidi", "Klein", 3, 1);
+VALUES (13, 'Heidi', 'Klein', 3, 1);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (14, "Ali", "Coleman", 4, 1);
+VALUES (14, 'Ali', 'Coleman', 4, 1);
 
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (21, "Iris", "Stanley", 1, 2);
+VALUES (21, 'Iris', 'Stanley', 1, 2);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (22, "Maisie", "Ayers", 2, 2);
+VALUES (22, 'Maisie', 'Ayers', 2, 2);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (23, "Coby", "Frank", 3, 2);
+VALUES (23, 'Coby', 'Frank', 3, 2);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (24, "Asher", "Sims", 4, 2);
+VALUES (24, 'Asher', 'Sims', 4, 2);
 
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (31, "Drake", "Coffey", 1, 3);
+VALUES (31, 'Drake', 'Coffey', 1, 3);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (32, "Vernon", "Sargent", 2, 3);
+VALUES (32, 'Vernon', 'Sargent', 2, 3);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (33, "Stacy", "Mccullough", 3, 3);
+VALUES (33, 'Stacy', 'Mccullough', 3, 3);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (34, "Molly", "Graves", 4, 3);
+VALUES (34, 'Molly', 'Graves', 4, 3);
 
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (41, "Brody", "Lawrence", 1, 4);
+VALUES (41, 'Brody', 'Lawrence', 1, 4);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (42, "Gloria", "Mccarty", 2, 4);
+VALUES (42, 'Gloria', 'Mccarty', 2, 4);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (43, "Steel", "Dominguez", 3, 4);
+VALUES (43, 'Steel', 'Dominguez', 3, 4);
 INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
-VALUES (44, "Philip", "Martinez", 4, 4);
+VALUES (44, 'Philip', 'Martinez', 4, 4);
 
 -- Insert for Customer
 INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
-VALUES (01, "Hyatt", "Rosario", "address 1, Tucson, AZ", DATE "1985-11-29");
+VALUES (01, 'Hyatt', 'Rosario', 'address 1, Tucson, AZ', DATE '1985-11-29');
 INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
-VALUES (02, "Nerea", "Moody", "address 2, Tucson, AZ", DATE "1980-09-17");
+VALUES (02, 'Nerea', 'Moody', 'address 2, Tucson, AZ', DATE '1980-09-17');
 INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
-VALUES (03, "Nelle", "Lee", "address 3, Tucson, AZ", DATE "1938-09-18");
+VALUES (03, 'Nelle', 'Lee', 'address 3, Tucson, AZ', DATE '1938-09-18');
 INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
-VALUES (04, "Winifred", "Bullock", "address 4, Tucson, AZ", DATE "1954-04-08");
+VALUES (04, 'Winifred', 'Bullock', 'address 4, Tucson, AZ', DATE '1954-04-08');
 INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
-VALUES (05, "Ariel", "Hickman", "address 5, Tucson, AZ", DATE "1987-07-03");
+VALUES (05, 'Ariel', 'Hickman', 'address 5, Tucson, AZ', DATE '1987-07-03');
 INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
-VALUES (06, "Yuri", "Hamilton", "address 6, Tucson, AZ", DATE "1956-12-03");
+VALUES (06, 'Yuri', 'Hamilton', 'address 6, Tucson, AZ', DATE '1956-12-03');
 
 -- Insert for Appointment
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
