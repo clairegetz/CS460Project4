@@ -21,5 +21,5 @@ SELECT * FROM (
        FROM Customer, StateID, Department
        WHERE Customer.customerID = StateID.customerID
        AND StateID.deptID = Department.deptID )
-WHERE expireDate <= DATE '2050-12-31';
+WHERE expireDate <= TO_DATE('12/31/2050', 'MM/DD/YYYY');
 
