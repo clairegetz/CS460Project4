@@ -63,30 +63,30 @@ VALUES (06, 'Yuri', 'Hamilton', 'address 6, Tucson, AZ', DATE '1956-12-03');
 
 -- Insert for Appointment
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
-VALUES (1, timestamp '2000-01-01 00:00:00', 1, NULL, NULL, 2, 1, 2);
+VALUES (1, timestamp '2000-01-01 00:00:00', 1, NULL, NULL, 2, 01, 12);
 
 -- Insert for Permit
-INSERT INTO Permit(permitNo, issueDate, expireDate, customerID, deptID)
+INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('P11111111', DATE '2020-01-22', DATE '2060-01-22', 03, 1);
-INSERT INTO Permit(permitNo, issueDate, expireDate, customerID, deptID)
+INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('P22222222', DATE '2011-04-19', DATE '2025-04-19', 04, 1);
-INSERT INTO Permit(permitNo, issueDate, expireDate, customerID, deptID)
+INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('P33333333', DATE '2016-06-16', DATE '2033-06-16', 05, 1);
-INSERT INTO Permit(permitNo, issueDate, expireDate, customerID, deptID)
+INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('P44444444', DATE '2018-02-06', DATE '2030-02-06', 06, 1);
 
 -- Insert for License
-INSERT INTO License(licenseNo, issueDate, expireDate, class, , customerID, deptID)
+INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('D11111111', DATE '2020-01-22', DATE '2060-01-22', 'D', 01, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, , customerID, deptID)
+INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('D22222222', DATE '2011-04-19', DATE '2025-04-19', 'C', 02, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, , customerID, deptID)
+INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('D33333333', DATE '2016-06-16', DATE '2033-06-16', 'A', 03, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, , customerID, deptID)
+INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('D44444444', DATE '2018-02-06', DATE '2030-02-06', 'D', 04, 2);
 INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('D55555555', DATE '2011-05-28', DATE '2066-05-28', 'C', 05, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, , customerID, deptID)
+INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
 VALUES ('D66666666', DATE '2000-08-20', DATE '2022-08-20', 'D', 06, 2);
 
 -- Insert for Registration
