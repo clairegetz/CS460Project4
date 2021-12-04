@@ -81,11 +81,11 @@ VALUES (8, timestamp '2021-11-07 14:00:00', 1, NULL, NULL, 1, 06, 11);
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
 VALUES (9, timestamp '2021-11-15 09:00:00', 1, NULL, NULL, 4, 05, 44);
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
-VALUES (10, timestamp '2021-11-22 16:00:00', 0, NULL, NULL, 3, 04, 31);
+VALUES (10, timestamp '2021-11-22 16:00:00', 0, NULL, NULL, 3, 01, 31);
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
-VALUES (11, timestamp '2021-11-27 14:00:00', 0, NULL, NULL, 2, 06, 24);
+VALUES (11, timestamp '2021-11-27 14:00:00', 0, NULL, NULL, 2, 04, 24);
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
-VALUES (12, timestamp '2021-11-30 09:00:00', 1, NULL, NULL, 1, 05, 14);
+VALUES (12, timestamp '2021-11-30 09:00:00', 1, NULL, NULL, 1, 03, 14);
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
 VALUES (13, timestamp '2021-12-01 00:00:00', 1, NULL, NULL, 4, 03, 41);
 INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid, customerid, employeeid)
