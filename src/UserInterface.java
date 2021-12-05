@@ -49,7 +49,15 @@ public class UserInterface {
 			"ON Appointment.deptID = Department.deptID\n" +
 			"WHERE apptTime < LAST_DAY(ADD_MONTHS(sysdate, -1)))\n" +
 			"GROUP BY deptName";
-    final private static String QUERY3 = "";
+    final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotleFee FROM\n"
+    		+ "(SELECT deptID, SUM(fee) as TotleFee FROM\n"
+    		+ "(SELECT * FROM Appointment\n"
+    		+ "WHERE apptTime >= TO_DATE('%s', 'MM/DD/YYYY')\n"
+    		+ "AND apptTime < ADD_MONTHS('%s', 1))\n"
+    		+ "GROUP BY deptID) a\n"
+    		+ "INNER JOIN Department d\n"
+    		+ "ON a.deptID = d.deptID\n"
+    		+ "ORDER BY a.TotleFee DESC;";
     final private static String QUERY4 = "";
 	
 	public UserInterface(Statement stmt) {
