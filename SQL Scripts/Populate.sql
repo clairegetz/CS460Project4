@@ -48,29 +48,29 @@ INSERT INTO Employee(employeeID, firstName, lastName, jobID, deptID)
 VALUES (44, 'Philip', 'Martinez', 4, 4);
 
 -- Insert for Customer
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (01, 'Hyatt', 'Rosario', 'address 1, Tucson, AZ', DATE '1985-11-29');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (02, 'Nerea', 'Moody', 'address 2, Tucson, AZ', DATE '1980-09-17');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (03, 'Nelle', 'Lee', 'address 3, Tucson, AZ', DATE '1938-09-18');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (04, 'Winifred', 'Bullock', 'address 4, Tucson, AZ', DATE '1954-04-08');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (05, 'Ariel', 'Hickman', 'address 5, Tucson, AZ', DATE '1987-07-03');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (06, 'Yuri', 'Hamilton', 'address 6, Tucson, AZ', DATE '1956-12-03');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (07, 'Chandler', 'Biggs', 'address 7, Tucson, AZ', DATE '1990-11-29');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (08, 'Carson', 'Moody', 'address 8, Tucson, AZ', DATE '1993-09-17');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (09, 'Nellie', 'Lee', 'address 9, Tucson, AZ', DATE '1948-09-18');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (10, 'Fred', 'Banfield', 'address 10, Tucson, AZ', DATE '1989-04-08');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (11, 'Becky', 'Moore', 'address 11, Tucson, AZ', DATE '2004-07-03');
-INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBorth)
+INSERT INTO Customer(customerID, firstName, lastName, address, dateOfBirth)
 VALUES (12, 'Greg', 'Hamilton', 'address 12, Tucson, AZ', DATE '2002-12-03');
 
 -- Insert for Appointment
