@@ -33,7 +33,7 @@ public class UserInterface {
     final private String QUESTION2 = "For the previous month, what is the count of each appointment type and how many of those "
     		+ "appointments were successful.";
     final private String QUESTION3 = "For each department what was the collected fee for a given month (MM/YYYY) in desc order?";
-    final private String QUESTION4 = "";
+    final private String QUESTION4 = "Display the salaries and job titles for a selected department Name.";
     
     // These are the 4 default query strings that will be sent to the database
     final private static String QUERY1 = "SELECT * FROM (\n" +
@@ -75,10 +75,10 @@ public class UserInterface {
     		+ "INNER JOIN clairegetz.Department d\n"
     		+ "ON a.deptID = d.deptID\n"
     		+ "ORDER BY a.TotleFee DESC";
-    final private static String QUERY4 = "SELECT j.title, j.salary FROM Job j\n"
-    		+ "INNER JOIN Employee e ON j.jobID = e.jobID\n"
+    final private static String QUERY4 = "SELECT j.title, j.salary FROM clairegetz.Job j\n"
+    		+ "INNER JOIN clairegetz.Employee e ON j.jobID = e.jobID\n" 
     		+ "WHERE e.deptID IN\n"
-    		+ "(SELECT deptID FROM Department WHERE deptName = '%s');";
+    		+ "(SELECT deptID FROM clairegetz.Department WHERE deptName = '%s')";
 	
     
     /*
@@ -555,7 +555,8 @@ public class UserInterface {
 				String month = getMonth();
 				query3(month);
 			} else if (input.equals("4")) {
-				query4();
+				String deptName = scan.nextLine();
+				query4(deptName);
 			} else {
 				System.out.println("You need to input a value between 1 and 4.");
 			}
@@ -643,7 +644,7 @@ public class UserInterface {
 	            while(results.next()) {
 	            	System.out.println(results.getInt("a.deptID"));
 	            	System.out.println("\t" + results.getString("d.deptName"));
-	            	System.out.println("\t" + results.getString("a.TotalFee"));
+	            	System.out.println("\t" + results.getInt("a.TotalFee"));
 	            }
 	    }
 	}
@@ -654,8 +655,8 @@ public class UserInterface {
 	 * 
 	 * This method is used to run the forth query question of the user and construct a response
 	 */
-	public static void query4() throws SQLException {
-		String query = String.format(QUERY4);
+	public static void query4(String deptName) throws SQLException {
+		String query = String.format(QUERY4, deptName);
 	    ResultSet results = stmt.executeQuery(query);
 	    if (results != null) {
 	            System.out.println("\n" + query);
@@ -668,11 +669,8 @@ public class UserInterface {
 	            }
 	            System.out.println();
 	            while(results.next()) {
-	            	System.out.println(results.getInt("Customer.customerID"));
-	            	System.out.println("\t" + results.getString("firstName"));
-	            	System.out.println("\t" + results.getString("lastName"));
-	            	System.out.println("\t" + results.getDate("expireDate"));
-	            	System.out.println("\t" + results.getString("deptName"));
+	            	System.out.println(results.getString("j.title"));
+	            	System.out.println("\t" + results.getInt("j.salary"));
 	            }
 	    }
 	}
