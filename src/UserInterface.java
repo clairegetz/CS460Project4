@@ -10,7 +10,7 @@ public class UserInterface {
 	 * 
 	 * Purpose: This class is used as the user interface that interacts with the user to ask them if they would
 	 * like to insert delete or query the existing DMV tables. It also is used to send queries to the database
-	 * and then create a response from the results.
+	 * and then create a response from the results
 	 */
 	
 	// The sql statement used to connect to interact with the database
@@ -69,8 +69,8 @@ public class UserInterface {
     final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotleFee FROM\n"
     		+ "(SELECT deptID, SUM(fee) as \"TotleFee\" FROM\n"
     		+ "(SELECT * FROM clairegetz.Appointment\n"
-    		+ "WHERE apptTime >= TO_DATE('%s', 'MM/DD/YYYY')\n"
-    		+ "AND apptTime < ADD_MONTHS('%s', 1))\n"
+    		+ "WHERE apptTime >= TO_DATE('%s-%s-01', 'MM/DD/YYYY')\n"
+    		+ "AND apptTime < ADD_MONTHS('%s-%s-01', 1))\n"
     		+ "GROUP BY deptID) a\n"
     		+ "INNER JOIN clairegetz.Department d\n"
     		+ "ON a.deptID = d.deptID\n"
@@ -644,7 +644,9 @@ public class UserInterface {
 	 * This method is used to run the third query question of the user and construct a response
 	 */
 	public static void query3(String month) throws SQLException {
-		String query = String.format(QUERY3, month, month);
+		String yyyy = month.substring(3);
+		String mm = month.substring(0, 2);
+		String query = String.format(QUERY3, yyyy, mm, yyyy, mm);
 	    ResultSet results = stmt.executeQuery(query);
 	    if (results != null) {
 	            System.out.println("\n" + query);
