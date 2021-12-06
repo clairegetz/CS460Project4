@@ -165,7 +165,7 @@ VALUES ('R0004R', DATE '2020-02-06', 'VIN44444444444444', 06, 3);
 INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
 VALUES ('R0005R', DATE '2021-06-16', 'VIN55555555555555', 01, 3);
 INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
-VALUES ('R0006R', DATE '2021-02-06', 'VIN66666666660666', 06, 3);
+VALUES ('R0006R', DATE '2021-02-06', 'VIN06060606060606', 06, 3);
 INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
 VALUES ('R0007R', DATE '2021-01-22', 'VIN77777777777777', 02, 3);
 INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
@@ -177,7 +177,7 @@ VALUES ('R0010R', DATE '2021-02-06', 'VIN10101010101010', 12, 3);
 INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
 VALUES ('R0011R', DATE '2021-06-16', 'VIN12121212121212', 07, 3);
 INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
-VALUES ('R0012R', DATE '2021-02-06', 'VIN13131313131313', 05, 3);
+VALUES ('R0012R', DATE '2021-02-06', 'VIN14141414141414', 05, 3);
 
 -- Insert for StateID
 INSERT INTO StateID(stateIDNo, issueDate, customerID, deptID)
