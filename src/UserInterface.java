@@ -10,7 +10,7 @@ public class UserInterface {
 	 * 
 	 * Purpose: This class is used as the user interface that interacts with the user to ask them if they would
 	 * like to insert delete or query the existing DMV tables. It also is used to send queries to the database
-	 * and then create a response from the results.
+	 * and then create a response from the results
 	 */
 	
 	// The sql statement used to connect to interact with the database
