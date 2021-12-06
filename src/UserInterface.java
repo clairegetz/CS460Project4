@@ -67,7 +67,7 @@ public class UserInterface {
 			"WHERE apptTime < LAST_DAY(ADD_MONTHS(sysdate, -1)))\n" +
 			"GROUP BY deptName";
     final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotleFee FROM\n"
-    		+ "(SELECT deptID, SUM(fee) as \"TotleFee\" FROM\n"
+    		+ "(SELECT deptID, SUM(fee) as TotleFee FROM\n"
     		+ "(SELECT * FROM clairegetz.Appointment\n"
     		+ "WHERE apptTime >= TO_DATE('%s-%s-01', 'MM/DD/YYYY')\n"
     		+ "AND apptTime < ADD_MONTHS(DATE '%s-%s-01', 1))\n"
