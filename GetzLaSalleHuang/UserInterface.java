@@ -367,7 +367,11 @@ public class UserInterface {
 		Table table = tables.get(table_name);
 		System.out.println(String.format("Insert into table %s: %s", table_name, table));
 		String[] query = new String[table.field_names.length];
-		String insert_query = String.format("insert into %s.%s values (", table_prefix, table_name);
+		String insert_query = String.format("insert into %s.%s(%s", table_prefix, table_name, table.field_names[0]);
+		for (int i = 1; i < table.field_names.length; i++) {
+			insert_query += ", " + table.field_names[i];
+		}
+		insert_query += ") values (";
 		boolean first = true;
 		for (int i = 0; i < table.field_names.length; i++) {
 			boolean valid = false;
@@ -605,6 +609,7 @@ public class UserInterface {
                 	System.out.print(results.getInt("customerID"));
                 	System.out.print("\t" + results.getString("firstName"));
                 	System.out.print("\t" + results.getString("lastName"));
+                	System.out.print("\t" + results.getDate("issueDate"));
                 	System.out.print("\t" + results.getDate("expireDate"));
                 	System.out.println("\t" + results.getString("deptName"));
                 }
