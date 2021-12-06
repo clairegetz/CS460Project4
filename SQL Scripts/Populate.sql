@@ -94,49 +94,49 @@ INSERT INTO Appointment(apptId, appttime, apptsuccessful, appttype, fee, deptid,
 VALUES (15, timestamp '2022-12-01 00:00:00', 1, NULL, 2, 2, 01, 21);
 
 -- Insert for Permit
-INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P11111111', DATE '2020-01-22', DATE '2060-01-22','A', 03, 1);
-INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P22222222', DATE '2011-04-19', DATE '2025-04-19','D', 04, 1);
-INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P33333333', DATE '2016-06-16', DATE '2033-06-16','M', 05, 1);
-INSERT INTO Permit(permitNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('P44444444', DATE '2018-02-06', DATE '2030-02-06','D', 06, 1);
+INSERT INTO Permit(permitNo, issueDate, class, customerID, deptID)
+VALUES ('P11111111', DATE '2020-01-22','A', 03, 1);
+INSERT INTO Permit(permitNo, issueDate, class, customerID, deptID)
+VALUES ('P22222222', DATE '2011-04-19', 'D', 04, 1);
+INSERT INTO Permit(permitNo, issueDate, class, customerID, deptID)
+VALUES ('P33333333', DATE '2016-06-16', 'M', 05, 1);
+INSERT INTO Permit(permitNo, issueDate, class, customerID, deptID)
+VALUES ('P44444444', DATE '2018-02-06','D', 06, 1);
 
 -- Insert for License
-INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('D11111111', DATE '2020-01-22', DATE '2060-01-22', 'D', 01, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('D22222222', DATE '2011-04-19', DATE '2025-04-19', 'C', 02, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('D33333333', DATE '2016-06-16', DATE '2033-06-16', 'A', 03, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('D44444444', DATE '2018-02-06', DATE '2030-02-06', 'D', 04, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('D55555555', DATE '2011-05-28', DATE '2066-05-28', 'C', 05, 2);
-INSERT INTO License(licenseNo, issueDate, expireDate, class, customerID, deptID)
-VALUES ('D66666666', DATE '2000-08-20', DATE '2022-08-20', 'D', 06, 2);
+INSERT INTO License(licenseNo, issueDate, class, customerID, deptID)
+VALUES ('D11111111', DATE '2020-01-22', 'D', 01, 2);
+INSERT INTO License(licenseNo, issueDate, class, customerID, deptID)
+VALUES ('D22222222', DATE '2011-04-19', 'C', 02, 2);
+INSERT INTO License(licenseNo, issueDate, class, customerID, deptID)
+VALUES ('D33333333', DATE '2016-06-16', 'A', 03, 2);
+INSERT INTO License(licenseNo, issueDate, class, customerID, deptID)
+VALUES ('D44444444', DATE '2018-02-06', 'D', 04, 2);
+INSERT INTO License(licenseNo, issueDate, class, customerID, deptID)
+VALUES ('D55555555', DATE '2011-05-28', 'C', 05, 2);
+INSERT INTO License(licenseNo, issueDate,class, customerID, deptID)
+VALUES ('D66666666', DATE '2000-08-20', 'D', 06, 2);
 
 -- Insert for Registration
-INSERT INTO Registration(licensePlateNo, issueDate, expireDate, VIN, customerID, deptID)
-VALUES ('R1111R', DATE '2020-01-22', DATE '2060-01-22', 'VIN11111111111111', 03, 3);
-INSERT INTO Registration(licensePlateNo, issueDate, expireDate, VIN, customerID, deptID)
-VALUES ('R2222R', DATE '2011-04-19', DATE '2025-04-19', 'VIN22222222222222', 04, 3);
-INSERT INTO Registration(licensePlateNo, issueDate, expireDate, VIN, customerID, deptID)
-VALUES ('R3333R', DATE '2016-06-16', DATE '2033-06-16', 'VIN33333333333333', 05, 3);
-INSERT INTO Registration(licensePlateNo, issueDate, expireDate, VIN, customerID, deptID)
-VALUES ('R4444R', DATE '2018-02-06', DATE '2030-02-06', 'VIN44444444444444', 06, 3);
-INSERT INTO Registration(licensePlateNo, issueDate, expireDate, VIN, customerID, deptID)
-VALUES ('R5555R', DATE '2016-06-16', DATE '2033-06-16', 'VIN55555555555555', 05, 3);
-INSERT INTO Registration(licensePlateNo, issueDate, expireDate, VIN, customerID, deptID)
-VALUES ('R6666R', DATE '2018-02-06', DATE '2030-02-06', 'VIN66666666666666', 06, 3);
+INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
+VALUES ('R1111R', DATE '2020-01-22', 'VIN11111111111111', 03, 3);
+INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
+VALUES ('R2222R', DATE '2011-04-19', 'VIN22222222222222', 04, 3);
+INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
+VALUES ('R3333R', DATE '2016-06-16', 'VIN33333333333333', 05, 3);
+INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
+VALUES ('R4444R', DATE '2018-02-06', 'VIN44444444444444', 06, 3);
+INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
+VALUES ('R5555R', DATE '2016-06-16', 'VIN55555555555555', 05, 3);
+INSERT INTO Registration(licensePlateNo, issueDate, VIN, customerID, deptID)
+VALUES ('R6666R', DATE '2018-02-06', 'VIN66666666666666', 06, 3);
 
 -- Insert for StateID
-INSERT INTO StateID(stateIDNo, issueDate, expireDate, customerID, deptID)
-VALUES ('S11111111', DATE '2020-01-22', DATE '2060-01-22', 01, 4);
-INSERT INTO StateID(stateIDNo, issueDate, expireDate, customerID, deptID)
-VALUES ('S22222222', DATE '2011-04-19', DATE '2025-04-19', 02, 4);
-INSERT INTO StateID(stateIDNo, issueDate, expireDate, customerID, deptID)
-VALUES ('S33333333', DATE '2016-06-16', DATE '2033-06-16', 03, 4);
-INSERT INTO StateID(stateIDNo, issueDate, expireDate, customerID, deptID)
-VALUES ('S44444444', DATE '2018-02-06', DATE '2030-02-06', 04, 4);
+INSERT INTO StateID(stateIDNo, issueDate, customerID, deptID)
+VALUES ('S11111111', DATE '2020-01-22', 01, 4);
+INSERT INTO StateID(stateIDNo, issueDate, customerID, deptID)
+VALUES ('S22222222', DATE '2011-04-19', 02, 4);
+INSERT INTO StateID(stateIDNo, issueDate, customerID, deptID)
+VALUES ('S33333333', DATE '2016-06-16', 03, 4);
+INSERT INTO StateID(stateIDNo, issueDate, customerID, deptID)
+VALUES ('S44444444', DATE '2018-02-06', 04, 4);
