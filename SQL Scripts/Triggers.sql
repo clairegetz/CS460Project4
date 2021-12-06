@@ -65,7 +65,7 @@ DECLARE customerCount NUMBER;
 BEGIN
     SELECT COUNT(*) INTO customerCount
     FROM Registration
-    WHERE customerID = :new.customerID
+    WHERE customerID = :new.customerID;
 IF customerCount >= 1
     THEN RAISE_APPLICATION_ERROR(-20002, 'THIS VEHICLE IS ALREADY REGISTERED');
 END IF;
