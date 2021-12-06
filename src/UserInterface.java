@@ -75,7 +75,10 @@ public class UserInterface {
     		+ "INNER JOIN clairegetz.Department d\n"
     		+ "ON a.deptID = d.deptID\n"
     		+ "ORDER BY a.TotleFee DESC";
-    final private static String QUERY4 = "";
+    final private static String QUERY4 = "SELECT j.title, j.salary FROM Job j\n"
+    		+ "INNER JOIN Employee e ON j.jobID = e.jobID\n"
+    		+ "WHERE e.deptID IN\n"
+    		+ "(SELECT deptID FROM Department WHERE deptName = '%s');";
 	
     
     /*
