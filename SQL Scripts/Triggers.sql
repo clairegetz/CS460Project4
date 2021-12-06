@@ -66,7 +66,7 @@ BEGIN
     SELECT COUNT(*) INTO vinCount
     FROM Registration
     WHERE VIN = :new.VIN;
-IF customerCount >= 1
+IF vinCount >= 1
     THEN RAISE_APPLICATION_ERROR(-20002, 'THIS VEHICLE IS ALREADY REGISTERED');
 END IF;
 END;
