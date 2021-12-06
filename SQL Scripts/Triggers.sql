@@ -61,11 +61,11 @@ END;
 CREATE OR REPLACE TRIGGER no_two_VINs
 BEFORE UPDATE OR INSERT ON Registration
 FOR EACH ROW
-DECLARE customerCount NUMBER;
+DECLARE vinCount NUMBER;
 BEGIN
-    SELECT COUNT(*) INTO customerCount
+    SELECT COUNT(*) INTO vinCount
     FROM Registration
-    WHERE customerID = :new.customerID;
+    WHERE VIN = :new.VIN;
 IF customerCount >= 1
     THEN RAISE_APPLICATION_ERROR(-20002, 'THIS VEHICLE IS ALREADY REGISTERED');
 END IF;
