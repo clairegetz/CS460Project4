@@ -5,8 +5,8 @@
 SELECT a.deptID, d.deptName, a.TotleFee FROM
 (SELECT deptID, SUM(fee) as TotleFee FROM
 (SELECT * FROM Appointment
-WHERE apptTime >= TO_DATE('%s-%s-01', 'YYYY-MM-DD')
-AND apptTime < ADD_MONTHS( DATE '%s-%s-01', 1))
+WHERE apptTime >= TO_DATE('2020-11-01', 'YYYY-MM-DD')
+AND apptTime < ADD_MONTHS( DATE '2020-11-01', 1))
 GROUP BY deptID) a
 INNER JOIN Department d
 ON a.deptID = d.deptID
