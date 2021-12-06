@@ -3,6 +3,6 @@ CREATE TABLE Customer(
        firstName VARCHAR(10) NOT NULL,
        lastName VARCHAR(10) NOT NULL,
        address VARCHAR(30) NOT NULL,
-       dateOfBorth DATE NOT NULL,
+       dateOfBirth DATE NOT NULL,
        PRIMARY KEY(customerID)
 );

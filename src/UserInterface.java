@@ -4,70 +4,99 @@ import java.util.Scanner;
 
 
 public class UserInterface {
+	
+	/*
+	 * Class: UserInterface, by Claire Getz, Jacob Lasalle, and Jiazheng Huang
+	 * 
+	 * Purpose: This class is used as the user interface that interacts with the user to ask them if they would
+	 * like to insert delete or query the existing DMV tables. It also is used to send queries to the database
+	 * and then create a response from the results.
+	 */
+	
+	// The sql statement used to connect to interact with the database
 	private static Statement stmt;
+	
 	private Scanner scan = new Scanner(System.in);
+	
+	// The list of all the tables names the user can interact with
 	private final String[] table_names = new String[] {"Employee", "Appointment", "Customer", "StateID",
 			"Permit", "Registration", "License"};
-	private HashMap<String, Table> tables = new HashMap<String, Table>();
-	private final String table_prefix = "Name";
 	
-	final private String QUESTION1 = "How many schools have different names in 2021 then they were in 2017?";
-    final private String QUESTION2 = "What are the district and school names of the schools that reported "
-                    + "decreased percentages in level 4 and 5, and increased percentages in level 1 and 2 from 2019 to 2021?";
-    final private String QUESTION3 = "What are the 5 highest combined level 4 and 5 percentage schools of a given a "
-                    + "year and district number?";
-    final private String QUESTION4 = "What are the percentage differences of all levels from the year 2019 to 2021 for a given school name?";
+	// This map stores the tables with the field names and what type they are
+	private HashMap<String, Table> tables = new HashMap<String, Table>();
+	
+	private final String table_prefix = "clairegetz";
+	
+	// These are the 4 query questions that the user can ask
+	final private String QUESTION1 = "What are the CustomerID, firstName, lastName, issueDat, expireDate, and deptName of the ids"
+			+ " that expire given a specific date (MM/DD/YYYY)?";
+    final private String QUESTION2 = "For the previous month, what is the count of each appointment type and how many of those "
+    		+ "appointments were successful.";
+    final private String QUESTION3 = "For each department what was the collected fee for a given month (MM/YYYY) in desc order?";
+    final private String QUESTION4 = "";
     
-    
+    // These are the 4 default query strings that will be sent to the database
     final private static String QUERY1 = "SELECT * FROM (\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM Customer, License, Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = License.customerID\n" +
 			"       AND License.deptID = Department.deptID\n" +
 			"       UNION ALL\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM Customer, Registration, Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = Registration.customerID\n" +
 			"       AND Registration.deptID = Department.deptID\n" +
 			"       UNION ALL\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM Customer, Permit, Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = Permit.customerID\n" +
 			"       AND Permit.deptID = Department.deptID\n" +
 			"       UNION ALL\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM Customer, StateID, Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = StateID.customerID\n" +
 			"       AND StateID.deptID = Department.deptID )\n" +
 			"WHERE expireDate <= TO_DATE('%s', 'MM/DD/YYYY')";
-    final private static String QUERY2 = "SELECT COUNT(apptSuccessful) AS TotalAppts, SUM(apptSuccessful) AS Successful, deptName FROM (\n" +
-			"SELECT * FROM Department JOIN Appointment\n" +
+    final private static String QUERY2 = "SELECT COUNT(apptSuccessful) AS \"TotalAppts\", SUM(apptSuccessful) AS \"Successful\", deptName FROM (\n" +
+			"SELECT * FROM clairegetz.Department Department JOIN clairegetz.Appointment Appointment\n" +
 			"ON Appointment.deptID = Department.deptID\n" +
 			"WHERE apptTime >= add_months(sysdate, -2)\n" +
 			"INTERSECT\n" +
-			"SELECT * FROM Department JOIN Appointment\n" +
+			"SELECT * FROM clairegetz.Department Department JOIN clairegetz.Appointment Appointment\n" +
 			"ON Appointment.deptID = Department.deptID\n" +
 			"WHERE apptTime < LAST_DAY(ADD_MONTHS(sysdate, -1)))\n" +
 			"GROUP BY deptName";
     final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotleFee FROM\n"
-    		+ "(SELECT deptID, SUM(fee) as TotleFee FROM\n"
-    		+ "(SELECT * FROM Appointment\n"
+    		+ "(SELECT deptID, SUM(fee) as \"TotleFee\" FROM\n"
+    		+ "(SELECT * FROM clairegetz.Appointment\n"
     		+ "WHERE apptTime >= TO_DATE('%s', 'MM/DD/YYYY')\n"
     		+ "AND apptTime < ADD_MONTHS('%s', 1))\n"
     		+ "GROUP BY deptID) a\n"
-    		+ "INNER JOIN Department d\n"
+    		+ "INNER JOIN clairegetz.Department d\n"
     		+ "ON a.deptID = d.deptID\n"
-    		+ "ORDER BY a.TotleFee DESC;";
+    		+ "ORDER BY a.TotleFee DESC";
     final private static String QUERY4 = "";
 	
+    
+    /*
+	 * Method: Constructor
+	 * Parameters: 
+	 * 	-	Statement: the oracle sql statement for database access
+	 */
 	public UserInterface(Statement stmt) {
 		this.stmt = stmt; 
 		create_table_map();
 	}
 	
 	
+	
+	/*
+	 * Method: create_table_map
+	 * 
+	 * This method is used to create the map of all the accessible tables along with their fields and field types.
+	 */
 	public void create_table_map() {
-		String[] employee = new String[] {"employeeID", "firstName", "lastName", "jobId", "deptId"};
+		String[] employee = new String[] {"employeeID", "firstName", "lastName", "jobID", "deptID"};
 		String[] employee_type = new String[] {"Int", "String", "String", "Int", "Int"};
 		tables.put("Employee", new Table(employee, employee_type));
 		String[] customer = new String[] {"customerID", "firstName", "lastName", "address", "dateOfBirth"};
@@ -76,21 +105,29 @@ public class UserInterface {
 		String[] appt = new String[] {"apptID", "apptTime", "apptSuccessful", "apptType", "fee", "deptID", "customerID", "employeeID"};
 		String[] appt_type = new String[] {"Int", "Time", "Number", "String", "Int", "Int", "Int", "Int"};
 		tables.put("Appointment", new Table(appt, appt_type));
-		String[] id = new String[] {"stateIDNo", "issueDate", "expireDate", "userID", "deptID"};
+		String[] id = new String[] {"stateIDNo", "issueDate", "expireDate", "customerID", "deptID"};
 		String[] id_type = new String[] {"Int", "Date", "Date", "Int", "Int"};
 		tables.put("StateID", new Table(id, id_type));
-		String[] permit = new String[] {"permitNo", "issueDate", "expireDate", "class", "userID", "deptID"};
+		String[] permit = new String[] {"permitNo", "issueDate", "expireDate", "class", "customerID", "deptID"};
 		String[] permit_type = new String[] {"Int", "Date", "Date", "String", "Int", "Int"};
 		tables.put("Permit", new Table(permit, permit_type));
-		String[] reg = new String[] {"licensePlateNo", "issueDate", "expireDate", "VIN", "userID", "deptID"};
+		String[] reg = new String[] {"licensePlateNo", "issueDate", "expireDate", "VIN", "customerID", "deptID"};
 		String[] reg_type = new String[] {"Int", "Date", "Date", "String", "Int", "Int"};
 		tables.put("Registration", new Table(reg, reg_type));
-		String[] license = new String[] {"licenseNo", "issueDate", "expireDate", "class", "userID", "deptID"};
+		String[] license = new String[] {"licenseNo", "issueDate", "expireDate", "class", "customerID", "deptID"};
 		String[] license_type = new String[] {"Int", "Date", "Date", "String", "Int", "Int"};
 		tables.put("License", new Table(license, license_type));
 		
 	}
 	
+	
+	/*
+	 * Method: run_user_interface
+	 * 
+	 * This method is the base of the user interface or main menu. It starts by getting the main menu
+	 * response from the user of if they want to insert delete update or query and then calls the 
+	 * requested function. If an sql error occurs in one of the functions it shows the error and exits.
+	 */
 	public void run_user_interface() {
 		int main_response = main_menu(true);
 		while (main_response != -1) {
@@ -118,6 +155,14 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: main_menu
+	 * Parameters: 
+	 * 	-	boolean is_first: This determines if it is the first main menu call if so it prints welcome
+	 * 
+	 * This method is used to ask the user if it wants to insert update delete or query the database and returns
+	 * the response
+	 */
 	public int main_menu(boolean is_first) {
 		if (is_first) {
 			System.out.println("Welcome to the DMV JDBC user interface!");
@@ -141,6 +186,13 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: table_select
+	 * Parameters: 
+	 * 	-	String command: This is the specific command that is being used
+	 * 
+	 * This method is used to select what table the user wants to create, update or delete from
+	 */
 	public String table_select(String command) {
 		System.out.println(String.format("Please select a table to preform %s on.", command));
 		while (true) {
@@ -171,6 +223,13 @@ public class UserInterface {
 		}
 	}
 	
+	/*
+	 * Method: isValidDate
+	 * Parameters: 
+	 * 	-	String input: The input value of the user
+	 * 
+	 * This method is used to check if the entered input is of the form of a date.
+	 */
 	public boolean isValidDate(String input) {
 		if (input.length() != 10) {
 			System.out.println("Invalid date, Ex. 0000-00-00");
@@ -194,6 +253,13 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: isValidTime
+	 * Parameters: 
+	 * 	-	String input: The input value of the user
+	 * 
+	 * This method is used to check if the entered input is of the form of a timestamp.
+	 */
 	public boolean isValidTime(String input) {
 		if (input.length() != 19) {
 			System.out.println("Invalid time, Ex. 2000-01-01 00:00:00");
@@ -227,6 +293,14 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: validate_input
+	 * Parameters: 
+	 * 	-	String input: The input value of the user
+	 *  -	String type: The type of the field that is being checked
+	 * 
+	 * This method is used to check if the user input is a valid input based on the field type
+	 */
 	public boolean validate_input(String input, String type) {
 		if (type.equals("Date")) {
 			return isValidDate(input);
@@ -254,6 +328,14 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: print_select
+	 * Parameters: 
+	 * 	-	String name: The field name
+	 *  - 	String type: The field type
+	 * 
+	 * This method is used to print the field and its type for the user. If needed shows an example
+	 */
 	public void print_select(String name, String type) {
 		String field = String.format("Select a %s (%s)", name, type);
 		if (type.equals("Date")) {
@@ -267,6 +349,13 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: insert
+	 * 
+	 * This method is used to construct an insert query for the user. It will start by asking the user what table they
+	 * want to insert into. Then it will ask them one by one each field value for them to insert. Then it will
+	 * construct an insert query for them.
+	 */
 	public void insert() throws SQLException {
 		String table_name = table_select("Insert");
 		Table table = tables.get(table_name);
@@ -297,6 +386,13 @@ public class UserInterface {
 		System.out.println("Insert Successful");
 	}
 	
+	
+	/*
+	 * Method: delete
+	 * 
+	 * This method is used to construct an delete query for the user. It will start by asking the user what table they
+	 * want to delete from. Then it will ask them for a primary key value for the table of which they want to delete.
+	 */
 	public void delete() throws SQLException {
 		String table_name = table_select("Delete");
 		Table table = tables.get(table_name);
@@ -313,6 +409,15 @@ public class UserInterface {
 		System.out.println("Delete Successful");
 	}
 	
+	
+	/*
+	 * Method: update
+	 * 
+	 * This method is used to construct an update query for the user. It will start by asking the user what table they
+	 * want to update a value for. It will then ask for the primary key they want to update the row for.
+	 * Then it will ask them one by one each field value for them to update they can select null if they dont want to 
+	 * change the value. Then it will construct an insert query for them.
+	 */
 	public void update() throws SQLException {
 		String table_name = table_select("Update");
 		Table table = tables.get(table_name);
@@ -354,8 +459,13 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: getDate
+	 * 
+	 * This method is used to get the date value the user wants to use in its query
+	 */
 	public String getDate() {
-		System.out.println("Please enter a date of the form mm-dd-yyyy");
+		System.out.println("Please enter a date of the form MM/DD/YYYY");
 		boolean valid = false;
 		String input = null;
 		while (!valid) {
@@ -366,8 +476,8 @@ public class UserInterface {
 			} else {
 				for (int i = 0; i < input.length(); i++) {
 					char c = input.charAt(i);
-					if (i == 4 || i == 7) {
-						if (c != '-') {
+					if (i == 2 || i == 5) {
+						if (c != '/') {
 							valid = false;
 						}
 					} else {
@@ -378,12 +488,54 @@ public class UserInterface {
 				}
 			}
 			if (!valid) {
-				System.out.println("Invalid date, Ex. mm-dd-yyyy");
+				System.out.println("Invalid date, Ex. MM/DD/YYYY");
 			}
 		}
 		return input;
 	}
 	
+	
+	/*
+	 * Method: getMonth
+	 * 
+	 * This method is used to get a month value from the user that will be used in the query
+	 */
+	public String getMonth() {
+		System.out.println("Please enter a month of the form MM/YYYY");
+		boolean valid = false;
+		String input = null;
+		while (!valid) {
+			valid = true;
+			input = scan.nextLine();
+			if (input.length() != 7) {
+				valid = false;
+			} else {
+				for (int i = 0; i < input.length(); i++) {
+					char c = input.charAt(i);
+					if (i == 2) {
+						if (c != '/') {
+							valid = false;
+						}
+					} else {
+						if (c < 48 || c > 57) {
+							valid = false;
+						}
+					}
+				}
+			}
+			if (!valid) {
+				System.out.println("Invalid month, Ex. MM/YYYY");
+			}
+		}
+		return input;
+	}
+	
+	
+	/*
+	 * Method: query
+	 * 
+	 * This method is used to ask the user which query they want to make on the database and then calls the specific one.
+	 */
 	public void query() throws SQLException {
 		System.out.println(String.format("\nWhich query would you like to run?\n"
                 + "1. %s\n2. %s\n3. %s\n4. %s\nOther. exit program!\n",
@@ -397,7 +549,8 @@ public class UserInterface {
 			} else if (input.equals("2")) {
 				query2();
 			} else if (input.equals("3")) {
-				query3();
+				String month = getMonth();
+				query3(month);
 			} else if (input.equals("4")) {
 				query4();
 			} else {
@@ -407,6 +560,13 @@ public class UserInterface {
 	}
 	
 	
+	/*
+	 * Method: query1
+	 * Parameters: 
+	 * 	-	String date: the date value that will be used in the query
+	 * 
+	 * This method is used to run the first query question of the user and construct a response
+	 */
 	public static void query1(String date) throws SQLException {
         String query = String.format(QUERY1, date);
         ResultSet results = stmt.executeQuery(query);
@@ -428,85 +588,123 @@ public class UserInterface {
                 	System.out.println("\t" + results.getString("deptName"));
                 }
         }
-}
-public static void query2() throws SQLException {
-	String query = String.format(QUERY2);
-    ResultSet results = stmt.executeQuery(query);
-    if (results != null) {
-            System.out.println("\n" + query);
-            ResultSetMetaData resultsmetadata = results.getMetaData();
-            if (resultsmetadata.getColumnCount() > 0) {
-            	System.out.println(resultsmetadata.getColumnName(1));
-            }
-            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
-            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
-            }
-            System.out.println();
-            while(results.next()) {
-            	System.out.println(results.getInt("TotalAppts"));
-            	System.out.println("\t" + results.getInt("Successful"));
-            }
-    }
-}
+	}
+	
+	
+	/*
+	 * Method: query2
+	 * 
+	 * This method is used to run the second query question of the user and construct a response
+	 */
+	public static void query2() throws SQLException {
+		String query = String.format(QUERY2);
+	    ResultSet results = stmt.executeQuery(query);
+	    if (results != null) {
+	            System.out.println("\n" + query);
+	            ResultSetMetaData resultsmetadata = results.getMetaData();
+	            if (resultsmetadata.getColumnCount() > 0) {
+	            	System.out.println(resultsmetadata.getColumnName(1));
+	            }
+	            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+	            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+	            }
+	            System.out.println();
+	            while(results.next()) {
+	            	System.out.println(results.getInt("TotalAppts"));
+	            	System.out.println("\t" + results.getInt("Successful"));
+	            }
+	    }
+	}
 
-public static void query3() throws SQLException {
-	String query = String.format(QUERY3);
-    ResultSet results = stmt.executeQuery(query);
-    if (results != null) {
-            System.out.println("\n" + query);
-            ResultSetMetaData resultsmetadata = results.getMetaData();
-            if (resultsmetadata.getColumnCount() > 0) {
-            	System.out.println(resultsmetadata.getColumnName(1));
-            }
-            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
-            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
-            }
-            System.out.println();
-            while(results.next()) {
-            	System.out.println(results.getInt("Customer.customerID"));
-            	System.out.println("\t" + results.getString("firstName"));
-            	System.out.println("\t" + results.getString("lastName"));
-            	System.out.println("\t" + results.getDate("expireDate"));
-            	System.out.println("\t" + results.getString("deptName"));
-            }
-    }
-}
+	
+	/*
+	 * Method: query3
+	 * Parameters: 
+	 * 	-	String month: the month value that will be used in the query
+	 * 
+	 * This method is used to run the third query question of the user and construct a response
+	 */
+	public static void query3(String month) throws SQLException {
+		String query = String.format(QUERY3, month, month);
+	    ResultSet results = stmt.executeQuery(query);
+	    if (results != null) {
+	            System.out.println("\n" + query);
+	            ResultSetMetaData resultsmetadata = results.getMetaData();
+	            if (resultsmetadata.getColumnCount() > 0) {
+	            	System.out.println(resultsmetadata.getColumnName(1));
+	            }
+	            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+	            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+	            }
+	            System.out.println();
+	            while(results.next()) {
+	            	System.out.println(results.getInt("a.deptID"));
+	            	System.out.println("\t" + results.getString("d.deptName"));
+	            	System.out.println("\t" + results.getString("a.TotalFee"));
+	            }
+	    }
+	}
 
-public static void query4() throws SQLException {
-	String query = String.format(QUERY4);
-    ResultSet results = stmt.executeQuery(query);
-    if (results != null) {
-            System.out.println("\n" + query);
-            ResultSetMetaData resultsmetadata = results.getMetaData();
-            if (resultsmetadata.getColumnCount() > 0) {
-            	System.out.println(resultsmetadata.getColumnName(1));
-            }
-            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
-            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
-            }
-            System.out.println();
-            while(results.next()) {
-            	System.out.println(results.getInt("Customer.customerID"));
-            	System.out.println("\t" + results.getString("firstName"));
-            	System.out.println("\t" + results.getString("lastName"));
-            	System.out.println("\t" + results.getDate("expireDate"));
-            	System.out.println("\t" + results.getString("deptName"));
-            }
-    }
-}
+	
+	/*
+	 * Method: query4
+	 * 
+	 * This method is used to run the forth query question of the user and construct a response
+	 */
+	public static void query4() throws SQLException {
+		String query = String.format(QUERY4);
+	    ResultSet results = stmt.executeQuery(query);
+	    if (results != null) {
+	            System.out.println("\n" + query);
+	            ResultSetMetaData resultsmetadata = results.getMetaData();
+	            if (resultsmetadata.getColumnCount() > 0) {
+	            	System.out.println(resultsmetadata.getColumnName(1));
+	            }
+	            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
+	            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
+	            }
+	            System.out.println();
+	            while(results.next()) {
+	            	System.out.println(results.getInt("Customer.customerID"));
+	            	System.out.println("\t" + results.getString("firstName"));
+	            	System.out.println("\t" + results.getString("lastName"));
+	            	System.out.println("\t" + results.getDate("expireDate"));
+	            	System.out.println("\t" + results.getString("deptName"));
+	            }
+	    }
+	}
 	
 	
 	public class Table {
 		
+		/*
+		 * Class: Table, by Claire Getz, Jacob Lasalle, and Jiazheng Huang
+		 * 
+		 * Purpose: This class is used as a representation of a database table where it stores the names of the fields
+		 * in an array as well as the types of each field so we can easily know what to ask the user for and to validate it.
+		 */
+		
 		String[] types;
 		String[] field_names;
 		
+		
+		/*
+		 * Method: Constructor
+		 * Parameters: 
+		 * 	-	String[] field_names: each of the fields in order with their names
+		 *  -	String[] types: each of the field types in order
+		 */
 		public Table(String[] field_names, String[] types) {
 			this.types = types;
 			this.field_names = field_names;
 		}
 		
 		
+		/*
+		 * Method: toString
+		 * 
+		 * Prints a string representation of the table class object
+		 */
 		public String toString() {
 			String ret_val = field_names[0] + String.format(" (%s)", types[0]);
 			

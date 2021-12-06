@@ -1,9 +1,30 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-//
+import java.sql.*;
+
+/*
+ * Name: Claire Getz, Jacob Lasalle, and Jiazheng Huang
+ * Course: CSC 460
+ * Assignment: Program 4
+ * Instructor: Dr. Lester McCann, TA: Haris Riaz, Sourav Mangla
+ * Due Date: December 6, 2021 3:30pm
+ * 
+ * Program: Prog4 - The goal of this program is to create a DBMS representation of the DMV that includes
+ * various departments in the DMV as well as customers, appointments, and employees. This program
+ * creates multiple DMV tables and allows the user to add update and delete new rows in the tables as
+ * well as select from 4 queries.
+ * 
+ * Use: The program is written in Java code.
+ */
+
 public class Proj4 {
+	
+	/*
+	 * Class: Prog4, by Claire Getz, Jacob Lasalle, and Jiazheng Huang
+	 * 
+	 * Purpose: This class is used to get the oracle credentials from the user through the command line
+	 * as well as grab the class object from oraclea nd connext to the database. It then calls the user interface
+	 * which is the main structure of the program
+	 */
+	
 
 	public static void main(String[] args) {
 		final String oracleURL = "jdbc:oracle:thin:@aloe.cs.arizona.edu:1521:oracle";
