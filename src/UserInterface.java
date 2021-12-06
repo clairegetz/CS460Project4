@@ -10,7 +10,7 @@ public class UserInterface {
 	 * 
 	 * Purpose: This class is used as the user interface that interacts with the user to ask them if they would
 	 * like to insert delete or query the existing DMV tables. It also is used to send queries to the database
-	 * and then create a response from the results
+	 * and then create a response from the results.
 	 */
 	
 	// The sql statement used to connect to interact with the database
@@ -70,7 +70,7 @@ public class UserInterface {
     		+ "(SELECT deptID, SUM(fee) as \"TotleFee\" FROM\n"
     		+ "(SELECT * FROM clairegetz.Appointment\n"
     		+ "WHERE apptTime >= TO_DATE('%s-%s-01', 'MM/DD/YYYY')\n"
-    		+ "AND apptTime < ADD_MONTHS('%s-%s-01', 1))\n"
+    		+ "AND apptTime < ADD_MONTHS(DATE '%s-%s-01', 1))\n"
     		+ "GROUP BY deptID) a\n"
     		+ "INNER JOIN clairegetz.Department d\n"
     		+ "ON a.deptID = d.deptID\n"
@@ -108,17 +108,17 @@ public class UserInterface {
 		String[] appt = new String[] {"apptID", "apptTime", "apptSuccessful", "apptType", "fee", "deptID", "customerID", "employeeID"};
 		String[] appt_type = new String[] {"Int", "Time", "Number", "String", "Int", "Int", "Int", "Int"};
 		tables.put("Appointment", new Table(appt, appt_type));
-		String[] id = new String[] {"stateIDNo", "issueDate", "expireDate", "customerID", "deptID"};
-		String[] id_type = new String[] {"Int", "Date", "Date", "Int", "Int"};
+		String[] id = new String[] {"stateIDNo", "issueDate", "customerID", "deptID"};
+		String[] id_type = new String[] {"String", "Date", "Int", "Int"};
 		tables.put("StateID", new Table(id, id_type));
-		String[] permit = new String[] {"permitNo", "issueDate", "expireDate", "class", "customerID", "deptID"};
-		String[] permit_type = new String[] {"Int", "Date", "Date", "String", "Int", "Int"};
+		String[] permit = new String[] {"permitNo", "issueDate", "class", "customerID", "deptID"};
+		String[] permit_type = new String[] {"String", "Date", "String", "Int", "Int"};
 		tables.put("Permit", new Table(permit, permit_type));
-		String[] reg = new String[] {"licensePlateNo", "issueDate", "expireDate", "VIN", "customerID", "deptID"};
-		String[] reg_type = new String[] {"Int", "Date", "Date", "String", "Int", "Int"};
+		String[] reg = new String[] {"licensePlateNo", "issueDate", "VIN", "customerID", "deptID"};
+		String[] reg_type = new String[] {"String", "Date", "String", "Int", "Int"};
 		tables.put("Registration", new Table(reg, reg_type));
-		String[] license = new String[] {"licenseNo", "issueDate", "expireDate", "class", "customerID", "deptID"};
-		String[] license_type = new String[] {"Int", "Date", "Date", "String", "Int", "Int"};
+		String[] license = new String[] {"licenseNo", "issueDate", "class", "customerID", "deptID"};
+		String[] license_type = new String[] {"String", "Date", "String", "Int", "Int"};
 		tables.put("License", new Table(license, license_type));
 		
 	}
@@ -394,6 +394,7 @@ public class UserInterface {
 			first = false;
 		}
 		insert_query += ")";
+		System.out.println(insert_query);
 		stmt.executeUpdate(insert_query);
 		System.out.println("Insert Successful");
 	}
@@ -417,6 +418,7 @@ public class UserInterface {
 		}
 		int id = Integer.parseInt(input);
 		String delete = String.format("Delete from %s.%s where %s = %d", table_prefix, table_name, table.field_names[0], id);
+		System.out.println(delete);
 		stmt.executeUpdate(delete);
 		System.out.println("Delete Successful");
 	}
@@ -466,6 +468,7 @@ public class UserInterface {
 			}
 		}
 		update += String.format("where %s = %d", table.field_names[0], id);
+		System.out.println(update);
 		stmt.executeUpdate(update);
 		System.out.println("Update Successful");
 	}
