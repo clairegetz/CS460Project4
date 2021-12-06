@@ -605,6 +605,7 @@ public class UserInterface {
                 	System.out.print(results.getInt("customerID"));
                 	System.out.print("\t" + results.getString("firstName"));
                 	System.out.print("\t" + results.getString("lastName"));
+					System.out.print("\t" + results.getDate("issueDate"));
                 	System.out.print("\t" + results.getDate("expireDate"));
                 	System.out.println("\t" + results.getString("deptName"));
                 }
