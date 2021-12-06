@@ -66,15 +66,15 @@ public class UserInterface {
 			"ON Appointment.deptID = Department.deptID\n" +
 			"WHERE apptTime < LAST_DAY(ADD_MONTHS(sysdate, -1)))\n" +
 			"GROUP BY deptName";
-    final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotleFee FROM\n"
-    		+ "(SELECT deptID, SUM(fee) as \"TotleFee\" FROM\n"
+    final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotalFee FROM\n"
+    		+ "(SELECT deptID, SUM(fee) as TotalFee FROM\n"
     		+ "(SELECT * FROM clairegetz.Appointment\n"
-    		+ "WHERE apptTime >= TO_DATE('%s-%s-01', 'MM/DD/YYYY')\n"
-    		+ "AND apptTime < ADD_MONTHS(DATE '%s-%s-01', 1))\n"
+    		+ "WHERE apptTime >= TO_DATE('%s/01/%s', 'MM/DD/YYYY')\n"
+            + "AND apptTime < ADD_MONTHS(TO_DATE('%s/01/%s', 'MM/DD/YYYY'), 1))\n"
     		+ "GROUP BY deptID) a\n"
     		+ "INNER JOIN clairegetz.Department d\n"
     		+ "ON a.deptID = d.deptID\n"
-    		+ "ORDER BY a.TotleFee DESC";
+    		+ "ORDER BY a.TotalFee DESC";
     final private static String QUERY4 = "SELECT j.title, j.salary FROM clairegetz.Job j\n"
     		+ "INNER JOIN clairegetz.Employee e ON j.jobID = e.jobID\n" 
     		+ "WHERE e.deptID IN\n"
@@ -649,22 +649,22 @@ public class UserInterface {
 	public static void query3(String month) throws SQLException {
 		String yyyy = month.substring(3);
 		String mm = month.substring(0, 2);
-		String query = String.format(QUERY3, yyyy, mm, yyyy, mm);
+		String query = String.format(QUERY3, mm, yyyy, mm, yyyy);
 	    ResultSet results = stmt.executeQuery(query);
 	    if (results != null) {
 	            System.out.println("\n" + query);
 	            ResultSetMetaData resultsmetadata = results.getMetaData();
 	            if (resultsmetadata.getColumnCount() > 0) {
-	            	System.out.println(resultsmetadata.getColumnName(1));
+	            	System.out.print(resultsmetadata.getColumnName(1));
 	            }
 	            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
 	            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
 	            }
 	            System.out.println();
 	            while(results.next()) {
-	            	System.out.print(results.getInt("a.deptID"));
-	            	System.out.print("\t" + results.getString("d.deptName"));
-	            	System.out.println("\t" + results.getInt("a.TotalFee"));
+	            	System.out.print(results.getInt("deptID"));
+	            	System.out.print("\t" + results.getString("deptName"));
+	            	System.out.println("\t" + results.getInt("TotalFee"));
 	            }
 	    }
 	}
