@@ -69,7 +69,7 @@ public class UserInterface {
     final private static String QUERY3 = "SELECT a.deptID, d.deptName, a.TotleFee FROM\n"
     		+ "(SELECT deptID, SUM(fee) as TotleFee FROM\n"
     		+ "(SELECT * FROM clairegetz.Appointment\n"
-    		+ "WHERE apptTime >= TO_DATE('%s-%s-01', 'MM/DD/YYYY')\n"
+    		+ "WHERE apptTime >= TO_DATE('%s-%s-01', 'YYYY-MM-DD')\n"
     		+ "AND apptTime < ADD_MONTHS(DATE '%s-%s-01', 1))\n"
     		+ "GROUP BY deptID) a\n"
     		+ "INNER JOIN clairegetz.Department d\n"
@@ -664,7 +664,7 @@ public class UserInterface {
 	            while(results.next()) {
 	            	System.out.print(results.getInt("a.deptID"));
 	            	System.out.print("\t" + results.getString("d.deptName"));
-	            	System.out.println("\t" + results.getInt("a.TotalFee"));
+	            	System.out.println("\t" + results.getInt("a.TotleFee"));
 	            }
 	    }
 	}
