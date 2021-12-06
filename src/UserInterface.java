@@ -43,17 +43,17 @@ public class UserInterface {
 			"       AND License.deptID = Department.deptID\n" +
 			"       UNION ALL\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.Registration Registration, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = Registration.customerID\n" +
 			"       AND Registration.deptID = Department.deptID\n" +
 			"       UNION ALL\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.Permit Permit, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = Permit.customerID\n" +
 			"       AND Permit.deptID = Department.deptID\n" +
 			"       UNION ALL\n" +
 			"       SELECT Customer.customerID, firstName, lastName, issueDate, expireDate, deptName\n" +
-			"       FROM clairegetz.Customer Customer, clairegetz.License License, clairegetz.Department Department\n" +
+			"       FROM clairegetz.Customer Customer, clairegetz.StateID StateID, clairegetz.Department Department\n" +
 			"       WHERE Customer.customerID = StateID.customerID\n" +
 			"       AND StateID.deptID = Department.deptID )\n" +
 			"WHERE expireDate <= TO_DATE('%s', 'MM/DD/YYYY')";
@@ -305,6 +305,9 @@ public class UserInterface {
 	 * This method is used to check if the user input is a valid input based on the field type
 	 */
 	public boolean validate_input(String input, String type) {
+		if (input.equals("NULL")) {
+			return true;
+		}
 		if (type.equals("Date")) {
 			return isValidDate(input);
 		} else if (type.equals("Time")) {
@@ -377,8 +380,14 @@ public class UserInterface {
 			if (!first) {
 				insert_query += ", ";
 			}
-			if (table.types[i].equals("Int") || table.types[i].equals("Number")) {
+			if (input.equals("NULL")) {
 				insert_query += String.format("%s", input);
+			} else if (table.types[i].equals("Int") || table.types[i].equals("Number")) {
+				insert_query += String.format("%s", input);
+			} else if (table.types[i].equals("Date")) {
+				insert_query += String.format("DATE '%s'", input);
+			} else if (table.types[i].equals("Time")) {
+				insert_query += String.format("timestamp '%s'", input);
 			} else {
 				insert_query += String.format("'%s'", input);
 			}
@@ -442,7 +451,7 @@ public class UserInterface {
 				print_select(table.field_names[i], table.types[i]);
 				System.out.println("Or enter null if you do not want to update the field");
 				input = scan.nextLine();
-				if (!input.equals("(null)")) {
+				if (!input.equals("null")) {
 					valid = validate_input(input, table.types[i]);
 				} else {
 					valid = true;
@@ -545,18 +554,23 @@ public class UserInterface {
                 QUESTION1, QUESTION2, QUESTION3, QUESTION4));
 		boolean valid = false;
 		while (!valid) {
-			String input = scan.next();
+			String input = scan.nextLine();
 			if (input.equals("1")) {
 				String date = getDate();
 				query1(date);
+				return;
 			} else if (input.equals("2")) {
 				query2();
+				return;
 			} else if (input.equals("3")) {
 				String month = getMonth();
 				query3(month);
+				return;
 			} else if (input.equals("4")) {
+				System.out.println("Enter a department name that you want info on");
 				String deptName = scan.nextLine();
 				query4(deptName);
+				return;
 			} else {
 				System.out.println("You need to input a value between 1 and 4.");
 			}
@@ -578,17 +592,17 @@ public class UserInterface {
                 System.out.println("\n" + query);
                 ResultSetMetaData resultsmetadata = results.getMetaData();
                 if (resultsmetadata.getColumnCount() > 0) {
-                	System.out.println(resultsmetadata.getColumnName(1));
+                	System.out.print(resultsmetadata.getColumnName(1));
                 }
                 for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
                 	System.out.print("  |  " + resultsmetadata.getColumnName(i));
                 }
                 System.out.println();
                 while(results.next()) {
-                	System.out.println(results.getInt("Customer.customerID"));
-                	System.out.println("\t" + results.getString("firstName"));
-                	System.out.println("\t" + results.getString("lastName"));
-                	System.out.println("\t" + results.getDate("expireDate"));
+                	System.out.print(results.getInt("customerID"));
+                	System.out.print("\t" + results.getString("firstName"));
+                	System.out.print("\t" + results.getString("lastName"));
+                	System.out.print("\t" + results.getDate("expireDate"));
                 	System.out.println("\t" + results.getString("deptName"));
                 }
         }
@@ -607,15 +621,16 @@ public class UserInterface {
 	            System.out.println("\n" + query);
 	            ResultSetMetaData resultsmetadata = results.getMetaData();
 	            if (resultsmetadata.getColumnCount() > 0) {
-	            	System.out.println(resultsmetadata.getColumnName(1));
+	            	System.out.print(resultsmetadata.getColumnName(1));
 	            }
 	            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
 	            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
 	            }
 	            System.out.println();
 	            while(results.next()) {
-	            	System.out.println(results.getInt("TotalAppts"));
-	            	System.out.println("\t" + results.getInt("Successful"));
+	            	System.out.print(results.getInt("TotalAppts"));
+	            	System.out.print("\t" + results.getInt("Successful"));
+	            	System.out.println("\t" + results.getString("deptName"));
 	            }
 	    }
 	}
@@ -642,8 +657,8 @@ public class UserInterface {
 	            }
 	            System.out.println();
 	            while(results.next()) {
-	            	System.out.println(results.getInt("a.deptID"));
-	            	System.out.println("\t" + results.getString("d.deptName"));
+	            	System.out.print(results.getInt("a.deptID"));
+	            	System.out.print("\t" + results.getString("d.deptName"));
 	            	System.out.println("\t" + results.getInt("a.TotalFee"));
 	            }
 	    }
@@ -662,15 +677,15 @@ public class UserInterface {
 	            System.out.println("\n" + query);
 	            ResultSetMetaData resultsmetadata = results.getMetaData();
 	            if (resultsmetadata.getColumnCount() > 0) {
-	            	System.out.println(resultsmetadata.getColumnName(1));
+	            	System.out.print(resultsmetadata.getColumnName(1));
 	            }
 	            for (int i = 2; i <= resultsmetadata.getColumnCount(); i++) {
 	            	System.out.print("  |  " + resultsmetadata.getColumnName(i));
 	            }
 	            System.out.println();
 	            while(results.next()) {
-	            	System.out.println(results.getString("j.title"));
-	            	System.out.println("\t" + results.getInt("j.salary"));
+	            	System.out.print(results.getString("title"));
+	            	System.out.println("\t" + results.getInt("salary"));
 	            }
 	    }
 	}
