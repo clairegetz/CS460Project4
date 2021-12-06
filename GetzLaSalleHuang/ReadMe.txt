@@ -7,6 +7,7 @@ ReadMe.txt
 to compile:
 javac UserInterface.java
 javac Proj4.java
+export CLASSPATH=/usr/lib/oracle/19.8/client64/lib/ojdbc8.jar:${CLASSPATH}
 java Proj4 <username> <password>  //where these are your oracle username and password
 
 Work Distribution:
