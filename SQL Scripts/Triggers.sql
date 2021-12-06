@@ -22,7 +22,7 @@ DECLARE customerCount NUMBER;
 BEGIN
     SELECT COUNT(*) INTO customerCount
     FROM Permit
-    WHERE customerID = :new.customerID
+    WHERE customerID = :new.customerID;
 IF customerCount >= 1
     THEN RAISE_APPLICATION_ERROR(-20002, 'USER ALREADY HAS A PERMIT');
 END IF;
@@ -36,7 +36,7 @@ DECLARE customerCount NUMBER;
 BEGIN
     SELECT COUNT(*) INTO customerCount
     FROM License
-    WHERE customerID = :new.customerID
+    WHERE customerID = :new.customerID;
 IF customerCount >= 1
     THEN RAISE_APPLICATION_ERROR(-20002, 'USER ALREADY HAS A LICENSE');
 END IF;
@@ -50,7 +50,7 @@ DECLARE customerCount NUMBER;
 BEGIN
     SELECT COUNT(*) INTO customerCount
     FROM StateID
-    WHERE customerID = :new.customerID
+    WHERE customerID = :new.customerID;
 IF customerCount >= 1
     THEN RAISE_APPLICATION_ERROR(-20002, 'USER ALREADY HAS A STATEID');
 END IF;
