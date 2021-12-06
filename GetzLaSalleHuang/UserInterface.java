@@ -10,7 +10,7 @@ public class UserInterface {
 	 * 
 	 * Purpose: This class is used as the user interface that interacts with the user to ask them if they would
 	 * like to insert delete or query the existing DMV tables. It also is used to send queries to the database
-	 * and then create a response from the results
+	 * and then create a response from the results.
 	 */
 	
 	// The sql statement used to connect to interact with the database
@@ -418,10 +418,12 @@ public class UserInterface {
 		String input = null;
 		while (!valid) {
 			input = scan.nextLine();
-			valid = validate_input(input, "Int");
+			valid = validate_input(input, table.types[0]);
 		}
-		int id = Integer.parseInt(input);
-		String delete = String.format("Delete from %s.%s where %s = %d", table_prefix, table_name, table.field_names[0], id);
+		if (!table.types[0].equals("Int")) {
+			input = "'" + input + "'";
+		}
+		String delete = String.format("Delete from %s.%s where %s = %s", table_prefix, table_name, table.field_names[0], input);
 		System.out.println(delete);
 		stmt.executeUpdate(delete);
 		System.out.println("Delete Successful");
@@ -445,9 +447,11 @@ public class UserInterface {
 		String input = null;
 		while (!valid) {
 			input = scan.nextLine();
-			valid = validate_input(input, "Int");
+			valid = validate_input(input, table.types[0]);
 		}
-		int id = Integer.parseInt(input);
+		if (!table.types[0].equals("Int")) {
+			input = "'" + input + "'";
+		}
 		
 		String update = String.format("Update %s.%s\n", table_prefix, table_name);
 		for (int i = 1; i < table.field_names.length; i++) {
@@ -471,7 +475,7 @@ public class UserInterface {
 				}
 			}
 		}
-		update += String.format("where %s = %d", table.field_names[0], id);
+		update += String.format("where %s = %s", table.field_names[0], input);
 		System.out.println(update);
 		stmt.executeUpdate(update);
 		System.out.println("Update Successful");
